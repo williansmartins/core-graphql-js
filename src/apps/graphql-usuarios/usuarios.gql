@@ -1,7 +1,14 @@
+input incluirUsuario {
+    nome: String
+}
 type Usuario {
     _id: ID!
     nome: String
 }
 type Query {
-    usuarios: [Usuario]
+    obterUsuario(id: ID!): Usuario
+    listarUsuarios: [Usuario]
+}
+type Mutation {
+    criarUsuario(input: incluirUsuario): Usuario
 }

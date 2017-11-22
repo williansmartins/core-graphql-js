@@ -5,16 +5,31 @@
  */
 'use strict';
 
-module.exports = (app) => {
+module.exports = (db) => {
 
-    function usuarios() {
-        return [{
-            _id: 12345678,
-            nome: 'Douglas Panhota'
-        }]
+    const usuario = require('./models/usuario')(db);
+
+    function obterUsuario(id) {
+
+        return usuario.obter(id);
+
+    }
+
+    function criarUsuario({ input }) {
+
+        return usuario.incluir(input);
+
+    }
+
+    function listarUsuarios() {
+
+        return usuario.obter('');
+
     }
 
     return {
-        usuarios
+        obterUsuario,
+        criarUsuario,
+        listarUsuarios
     }
 }
