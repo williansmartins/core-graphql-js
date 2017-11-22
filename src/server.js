@@ -8,6 +8,7 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const winston = require('winston');
 const expressWinston = require('express-winston');
+const async = require('async');
 
 const app = express();
 
@@ -22,16 +23,30 @@ app.use(expressWinston.logger({
   ]
 }));
 
-// Obtem todas as APIs GraphQL
-const appsGraphQL = require('./lib/scan-apps-graphql')(app);
-
-app.use('/graphql', graphqlHTTP({
-  schema: appsGraphQL.schema,
-  rootValue: appsGraphQL.root,
-  graphiql: true,
-}));
-
-const port = 4000;
-app.listen(port, () => {
-  console.log(`Running a GraphQL API server at localhost:${port}/graphql`);
+async.auto({
+  mongodb: (callback) => {
+    // Monta conexão do MongoDB
+    const mongoConnect = require('./lib/mongodb-connect');
+    mongoConnect((err, db) => {
+      if (!err) {
+        app.set('mongodb', db);
+      }
+      callback();
+    });
+  },
+  graphql: ['mongodb', (_, callback) => {
+    // Obtem todas as APIs GraphQL
+    const appsGraphQL = require('./lib/scan-apps-graphql')(app.get('mongodb'));
+    app.use('/graphql', graphqlHTTP({
+      schema: appsGraphQL.schema,
+      rootValue: appsGraphQL.root,
+      graphiql: true,
+    }));
+    callback();
+  }]
+}, () => {
+  const port = 4000;
+  app.listen(port, () => {
+    console.log(`Executando o GraphQL API Server no localhost:${port}/graphql`);
+  });
 });

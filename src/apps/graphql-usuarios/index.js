@@ -5,7 +5,7 @@
  */
 'use strict';
 
-module.exports.root = (app) => {
+module.exports = (app) => {
 
     function usuarios() {
         return [{

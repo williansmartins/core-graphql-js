@@ -5,19 +5,16 @@
  */
 'use strict';
 
-module.exports = (app) => {
+module.exports.root = (app) => {
 
-    function produtos() {
-
+    function testes() {
         return [{
             _id: 12345678,
-            nome: 'Desodorante Axe',
-            volume: '200ml'
+            nome: 'Douglas Panhota'
         }]
-        
-    }  
+    }
 
     return {
-        produtos
+        testes
     }
 }

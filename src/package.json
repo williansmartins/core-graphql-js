@@ -13,6 +13,7 @@
     "nodemon": "^1.12.1"
   },
   "dependencies": {
+    "async": "^2.6.0",
     "express": "^4.16.2",
     "express-graphql": "^0.6.11",
     "express-winston": "^2.4.0",
