@@ -5,7 +5,7 @@
  */
 'use strict';
 const { buildSchema } = require('graphql');
-const { mergeResolvers } = require('merge-graphql-schemas');
+const { mergeTypes } = require('merge-graphql-schemas');
 const fs = require('fs');
 const path = require('path');
 
@@ -37,8 +37,8 @@ let schemas = [];
             try {
                 _root = require(findIndex).root;
                 let stringSchema = fs.readFileSync(findGraphQL, 'utf8');
-                let objectSchema = buildSchema(stringSchema);
-                _schema = objectSchema;
+                buildSchema(stringSchema);
+                _schema = stringSchema;
             } catch (error) {
                 console.log(`Erro na montagem no GraphQL: ${error}`);
             } finally {
@@ -53,6 +53,6 @@ let schemas = [];
 
 let retorno = {};
 retorno.root = root;
-retorno.schema = mergeResolvers(schemas);
+retorno.schema = buildSchema(mergeTypes(schemas));
 
 module.exports = retorno;
