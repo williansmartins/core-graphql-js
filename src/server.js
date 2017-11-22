@@ -22,6 +22,7 @@ app.use(expressWinston.logger({
   ]
 }));
 
+// Obtem todas as APIs GraphQL
 const appsGraphQL = require('./lib/merge-graphql');
 
 app.use('/graphql', graphqlHTTP({
