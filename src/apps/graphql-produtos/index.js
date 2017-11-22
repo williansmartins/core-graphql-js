@@ -5,12 +5,19 @@
  */
 'use strict';
 
-module.exports.root = {
-    produtos: () => {
-        return {
+module.exports.root = (app) => {
+
+    function produtos() {
+
+        return [{
             _id: 12345678,
             nome: 'Desodorante Axe',
             volume: '200ml'
-        }
+        }]
+        
+    }  
+
+    return {
+        produtos
     }
 }

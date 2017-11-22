@@ -23,7 +23,7 @@ app.use(expressWinston.logger({
 }));
 
 // Obtem todas as APIs GraphQL
-const appsGraphQL = require('./lib/merge-graphql');
+const appsGraphQL = require('./lib/scan-apps-graphql')(app);
 
 app.use('/graphql', graphqlHTTP({
   schema: appsGraphQL.schema,

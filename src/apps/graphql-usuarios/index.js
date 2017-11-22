@@ -5,11 +5,16 @@
  */
 'use strict';
 
-module.exports.root = {
-    usuarios: () => {
-        return {
+module.exports.root = (app) => {
+
+    function usuarios() {
+        return [{
             _id: 12345678,
             nome: 'Douglas Panhota'
-        }
+        }]
+    }
+
+    return {
+        usuarios
     }
 }
