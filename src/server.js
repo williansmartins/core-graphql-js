@@ -40,11 +40,13 @@ async.auto({
     app.use('/graphql', graphqlHTTP({
       schema: appsGraphQL.schema,
       rootValue: appsGraphQL.root,
-      graphiql: true,
+      // pretty: true,
+      graphiql: (process.env.NODE_ENV !== 'production')
     }));
     callback();
   }]
 }, () => {
+  // Iniciar servidor
   const port = 4000;
   app.listen(port, () => {
     console.log(`Executando o GraphQL API Server no localhost:${port}/graphql`);

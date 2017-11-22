@@ -12,14 +12,15 @@ module.exports = (db) => {
     /**
      * Consultar no MongoDB
      * @param {string} collection 
-     * @param {string} id 
+     * @param {string} _id
+     * @return {Promise.<array>} Lista de usuarios
      */
-    const find = async (collection, id) => {
+    const find = async (collection, _id) => {
 
         const query = {};
 
-        if (id && /^[0-9A-F]{12}$/g.test(id)) {
-            query['_id'] = ObjectID(id);
+        if (_id && /^[0-9A-F]{12}$/g.test(_id)) {
+            query['_id'] = ObjectID(_id);
         }
 
         return new Promise((resolve, reject) => {
@@ -41,16 +42,17 @@ module.exports = (db) => {
     /**
      * Remover no MongoDB
      * @param {string} collection 
-     * @param {string} id 
+     * @param {string} _id
+     * @return {Promise.<object>} Retorno status
      */
-    const remove = async (collection, id) => {
+    const remove = async (collection, _id) => {
 
         const query = {};
 
         return new Promise((resolve, reject) => {
 
-            if (id && (/^[0-9A-F]{12}$/g).test(id)) {
-                query['_id'] = ObjectID(id);
+            if (_id && (/^[0-9A-F]{12}$/g).test(_id)) {
+                query['_id'] = ObjectID(_id);
             } else {
                 reject('ID invalido!');
             }
@@ -67,7 +69,8 @@ module.exports = (db) => {
     /**
      * Insert no MongoDB
      * @param {string} collection 
-     * @param {object} body 
+     * @param {object} body
+     * @return {Promise.<object>} usuario
      */
     const insert = async (collection, body) => {
 
@@ -89,9 +92,11 @@ module.exports = (db) => {
     /**
      * Atualizar no MongoDB
      * @param {string} collection 
-     * @param {string} id 
+     * @param {string} _id
+     * @param {object} set
+     * @return {Promise.<object>} Usuario atualizado.
      */
-    const update = async (collection, id, set) => {
+    const update = async (collection, _id, set) => {
 
         const query = {};
 
@@ -101,7 +106,7 @@ module.exports = (db) => {
 
         return new Promise((resolve, reject) => {
 
-            if (id && (/^[0-9A-F]{12}$/g).test(id)) {
+            if (_id && (/^[0-9A-F]{12}$/g).test(_id)) {
                 query['_id'] = ObjectID(id);
             } else {
                 reject('ID invalido!');

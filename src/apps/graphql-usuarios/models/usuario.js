@@ -14,10 +14,10 @@ module.exports = (db) => {
      * @param {string} id id do usuario.
      * @return {object} usuario.
      */
-    async function obter(id) {
+    async function obterUsuario(id) {
 
         try {
-            return (await utils.find('usuarios', id))[0];
+            return (await utils.find('usuarios', id));
         } catch (error) {
             return error;
         }
@@ -29,7 +29,7 @@ module.exports = (db) => {
      * @param {objet} usuario
      * @return {object} usuario.
      */
-    async function incluir(usuario) {
+    async function incluirUsuario(usuario) {
 
         try {
             let ret = (await utils.insert('usuarios', usuario));
@@ -40,9 +40,43 @@ module.exports = (db) => {
 
     }
 
+    /**
+     * Atualizar usuario.
+     * @param {string} id
+     * @param {object} usuario
+     * @return {object} usuario.
+     */
+    async function atualizarUsuario(id, usuario) {
+
+        try {
+            let ret = (await utils.update('usuarios', id, usuario));
+            return ret;
+        } catch (error) {
+            return error;
+        }
+
+    }
+
+    /**
+     * Remover usuario.
+     * @param {string} id id do usuario.
+     * @return {object} usuario.
+     */
+    async function removerUsuario(id) {
+
+        try {
+            return (await utils.remove('usuarios', id));
+        } catch (error) {
+            return error;
+        }
+
+    }
+
     return {
-        obter,
-        incluir
+        obterUsuario,
+        incluirUsuario,
+        atualizarUsuario,
+        removerUsuario
     }
 
 }
