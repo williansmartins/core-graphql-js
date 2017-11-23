@@ -14,6 +14,36 @@ module.exports = (db) => {
     /**
      * Consultar no MongoDB
      * @param {string} collection tabela
+     * @param {object} key pesquisa
+     * @return {Promise.<array>} retorna lista de recursos pesquisado
+     */
+    async function scan(collection, key) {
+
+        const query = (key && typeof key === 'object') ? key : {};
+
+        if (query._id && typeof query._id === 'string' && idRegex.test(query._id)) {
+            query['_id'] = ObjectID(query._id);
+        }
+
+        return new Promise((resolve, reject) => {
+
+            db.collection(collection)
+                .find(query)
+                .toArray()
+                .then(data => {
+                    resolve(data);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+
+        });
+
+    };
+
+    /**
+     * Consultar no MongoDB (pelo ID)
+     * @param {string} collection tabela
      * @param {string} _id id
      * @return {Promise.<array>} retorna lista de recursos pesquisado
      */
@@ -21,11 +51,13 @@ module.exports = (db) => {
 
         const query = {};
 
-        if (_id && idRegex.test(_id)) {
-            query['_id'] = ObjectID(_id);
-        }
-
         return new Promise((resolve, reject) => {
+
+            if (_id && typeof _id === 'string' && idRegex.test(_id)) {
+                query['_id'] = ObjectID(_id);
+            } else {
+                reject({});
+            }
 
             db.collection(collection)
                 .find(query)
@@ -53,16 +85,16 @@ module.exports = (db) => {
 
         return new Promise((resolve, reject) => {
 
-            if (_id && idRegex.test(_id)) {
+            if (_id && typeof _id === 'string' && idRegex.test(_id)) {
                 query['_id'] = ObjectID(_id);
             } else {
-                reject('ID invalido!');
+                reject({});
             }
 
             db.collection(collection)
                 .deleteOne(query)
                 .then(data => {
-                    resolve(data);
+                    resolve(`Foi/Foram removido(s) ${data.deletedCount} registro(s)!`);
                 })
                 .catch(err => {
                     reject(err);
@@ -112,10 +144,10 @@ module.exports = (db) => {
 
         return new Promise((resolve, reject) => {
 
-            if (_id && idRegex.test(_id)) {
+            if (_id && typeof _id === 'string' && idRegex.test(_id)) {
                 query['_id'] = ObjectID(id);
             } else {
-                reject('ID invalido!');
+                reject({});
             }
 
             db.collection(collection)
@@ -132,6 +164,7 @@ module.exports = (db) => {
     };
 
     return {
+        scan,
         find,
         remove,
         insert,

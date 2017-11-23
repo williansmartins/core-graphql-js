@@ -39,7 +39,7 @@ module.exports = (db) => {
      */
     async function listarUsuarios() {
 
-        const ret = (await modelUsuario.obterUsuario());
+        const ret = (await modelUsuario.pesquisarUsuarios({}));
         return ret;
 
     }

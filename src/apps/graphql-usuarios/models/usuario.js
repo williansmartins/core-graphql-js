@@ -10,7 +10,7 @@ module.exports = (db) => {
     const utils = require('../../utils/mongodb-crud')(db);
 
     /**
-     * Obter usuario.
+     * Obter usuario pelo ID.
      * @param {string} id id do usuario.
      * @return {object} usuario.
      */
@@ -18,6 +18,22 @@ module.exports = (db) => {
 
         try {
             let ret = (await utils.find('usuarios', id));
+            return ret;
+        } catch (error) {
+            return error;
+        }
+
+    }
+
+    /**
+     * Obter lista de usuarios.
+     * @param {object} query pesquisa
+     * @return {array} usuario.
+     */
+    async function pesquisarUsuarios(query) {
+
+        try {
+            let ret = (await utils.scan('usuarios', query));
             return ret;
         } catch (error) {
             return error;
@@ -66,7 +82,8 @@ module.exports = (db) => {
     async function removerUsuario(id) {
 
         try {
-            return (await utils.remove('usuarios', id));
+            const ret = (await utils.remove('usuarios', id));
+            return ret;
         } catch (error) {
             return error;
         }
@@ -74,6 +91,7 @@ module.exports = (db) => {
     }
 
     return {
+        pesquisarUsuarios,
         obterUsuario,
         incluirUsuario,
         atualizarUsuario,
