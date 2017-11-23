@@ -1,9 +1,0 @@
-type Produto {
-    _id: ID!
-    nome: String
-    volume: String    
-}
-
-type Query {
-    produtos: [Produto]
-}

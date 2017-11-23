@@ -27,6 +27,7 @@ module.exports = (db) => {
 
     const root = {};
     const schemas = [];
+    const errors = [];
 
     (fs.readdirSync(dirApps)).forEach((pasta) => {
 
@@ -56,15 +57,24 @@ module.exports = (db) => {
                     }
                 } catch (error) {
                     const regex = new RegExp('(.+)(?=/' + folderApp + ')', 'g');
-                    console.log('Erro no registro da API GraphQL:');
-                    console.log('\t- Function Resolved.:', findIndex.replace(regex, '.'));
-                    console.log('\t- GraphQL Schema....:', findGraphQL.replace(regex, '.'));
+                    errors.push({
+                        functionResolved: findIndex.replace(regex, '.'),
+                        graphqlSchema: findGraphQL.replace(regex, '.')
+                    });
                 }
             }
 
         }
 
     });
+
+    if (errors.length > 0) {
+        console.log('Erro no registro da API GraphQL:');
+        errors.forEach(error => {
+            console.log(`-> Function Resolved.: ${error.functionResolved}`);
+            console.log(`-> GraphQL Schema....: ${error.graphqlSchema}`);
+        })
+    }
 
     return {
         root: root,

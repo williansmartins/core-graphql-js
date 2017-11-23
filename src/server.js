@@ -36,19 +36,20 @@ async.auto({
   },
   graphql: ['mongodb', (_, callback) => {
     // Obtem todas as APIs GraphQL
-    const appsGraphQL = require('./lib/scan-apps-graphql')(app.get('mongodb'));
+    const { schema, root } = require('./lib/scan-apps-graphql')(app.get('mongodb'));
     app.use('/graphql', graphqlHTTP({
-      schema: appsGraphQL.schema,
-      rootValue: appsGraphQL.root,
+      schema: schema,
+      rootValue: root,
       // pretty: true,
       graphiql: (process.env.NODE_ENV !== 'production')
     }));
-    callback();
+    callback(null, Object.keys(root));
   }]
-}, () => {
+}, (_, { graphql }) => {
   // Iniciar servidor
   const port = 4000;
   app.listen(port, () => {
-    console.log(`Executando o GraphQL API Server no localhost:${port}/graphql`);
+    console.log(`\nExecutando o GraphQL API Server no localhost:${port}/graphql`);
+    graphql.forEach(service => console.log(`-> GraphQL service "${service}" registrado`));
   });
 });

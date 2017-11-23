@@ -17,7 +17,7 @@ module.exports = (db) => {
     async function obterUsuario({ _id }) {
 
         const ret = (await modelUsuario.obterUsuario(_id));
-        return ret[0];
+        return ret;
 
     }
 
@@ -50,9 +50,11 @@ module.exports = (db) => {
      * @param {object} input usuario que será cadastrado.
      * @return {object} usuario criado 
      */
-    async function atualizarUsuario({ _id }, { input }) {
+    async function atualizarUsuario(usuario) {
 
-        const ret = (await modelUsuario.atualizarUsuario(_id, input));
+        const _id = usuario._id, body = usuario;
+        delete body._id;
+        const ret = (await modelUsuario.atualizarUsuario(_id, body));
         return ret;
 
     }

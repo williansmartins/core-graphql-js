@@ -9,7 +9,15 @@ const { ObjectID } = require('mongodb');
 
 module.exports = (db) => {
 
-    const idRegex = new RegExp('^[0-9a-f]{24}$', 'g');
+    /**
+     * Vaidar ID.
+     * @param {string} id
+     * @return {boolean} 'true' o ID é valido. 
+     */
+    function isValidID(id) {
+        const idRegex = new RegExp('^[0-9a-f]{24}$', 'g');
+        return (id && typeof id === 'string' && idRegex.test(id));
+    }
 
     /**
      * Consultar no MongoDB
@@ -21,7 +29,7 @@ module.exports = (db) => {
 
         const query = (key && typeof key === 'object') ? key : {};
 
-        if (query._id && typeof query._id === 'string' && idRegex.test(query._id)) {
+        if (isValidID(query._id)) {
             query['_id'] = ObjectID(query._id);
         }
 
@@ -30,12 +38,8 @@ module.exports = (db) => {
             db.collection(collection)
                 .find(query)
                 .toArray()
-                .then(data => {
-                    resolve(data);
-                })
-                .catch(err => {
-                    reject(err);
-                });
+                .then(data => resolve(data))
+                .catch(err => reject(err));
 
         });
 
@@ -53,7 +57,7 @@ module.exports = (db) => {
 
         return new Promise((resolve, reject) => {
 
-            if (_id && typeof _id === 'string' && idRegex.test(_id)) {
+            if (isValidID(_id)) {
                 query['_id'] = ObjectID(_id);
             } else {
                 reject({});
@@ -62,12 +66,8 @@ module.exports = (db) => {
             db.collection(collection)
                 .find(query)
                 .toArray()
-                .then(data => {
-                    resolve(data);
-                })
-                .catch(err => {
-                    reject(err);
-                });
+                .then(data => resolve(data[0]))
+                .catch(err => reject(err));
 
         });
 
@@ -85,7 +85,7 @@ module.exports = (db) => {
 
         return new Promise((resolve, reject) => {
 
-            if (_id && typeof _id === 'string' && idRegex.test(_id)) {
+            if (isValidID(_id)) {
                 query['_id'] = ObjectID(_id);
             } else {
                 reject({});
@@ -93,12 +93,8 @@ module.exports = (db) => {
 
             db.collection(collection)
                 .deleteOne(query)
-                .then(data => {
-                    resolve(`Foi/Foram removido(s) ${data.deletedCount} registro(s)!`);
-                })
-                .catch(err => {
-                    reject(err);
-                });
+                .then(data => resolve(`Foi/Foram removido(s) ${data.deletedCount} registro(s)!`))
+                .catch(err => reject(err));
 
         });
 
@@ -114,14 +110,16 @@ module.exports = (db) => {
 
         return new Promise((resolve, reject) => {
 
+            if (typeof body === 'object') {
+                if (body._id) delete body._id;
+            } else {
+                reject({});
+            }
+
             db.collection(collection)
                 .insertOne(body)
-                .then(data => {
-                    resolve(data);
-                })
-                .catch(err => {
-                    reject(err);
-                });
+                .then(data => resolve(data))
+                .catch(err => reject(err));
 
         });
 
@@ -136,28 +134,27 @@ module.exports = (db) => {
      */
     async function update(collection, _id, set) {
 
-        const query = {};
-
-        const update = {
-            '$set': set
-        };
+        const query = {}, update = {};
 
         return new Promise((resolve, reject) => {
 
-            if (_id && typeof _id === 'string' && idRegex.test(_id)) {
-                query['_id'] = ObjectID(id);
+            if (isValidID(_id)) {
+                query['_id'] = ObjectID(_id);
+            } else {
+                reject({});
+            }
+
+            if (typeof set === 'object') {
+                if (set._id) delete set._id;
+                update['$set'] = set;
             } else {
                 reject({});
             }
 
             db.collection(collection)
                 .updateOne(query, update)
-                .then(data => {
-                    resolve(data);
-                })
-                .catch(err => {
-                    reject(err);
-                });
+                .then(data => resolve(`Foi/Foram atualizado(s) ${data.matchedCount} registro(s)!`))
+                .catch(err => reject(err));
 
         });
 
