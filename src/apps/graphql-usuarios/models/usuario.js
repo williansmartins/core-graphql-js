@@ -7,7 +7,6 @@
 
 module.exports = ({ getModule }) => {
 
-    // const utils = require('../../utils/mongodb-crud')(context);
     const crud = getModule('utils/mongodb-crud', true);
 
     /**
