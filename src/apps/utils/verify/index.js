@@ -1,22 +1,40 @@
+import { error } from "util";
+
 function Verify(objeto) {
     
     //var validator = require("validator");
 
-    var erros = [];
-    var elemento;
-    var prop;
+    let erros = [];
+    let elemento;
+    let prop;
 
-    this.check = function(propriedade) {
-        elemento = objeto[propriedade];
-        prop = propriedade;
-        return this;
+    function check(propriedade, mensagem) {
+        if(!(this instanceof check)) {
+            elemento = objeto[propriedade];
+            prop = propriedade;
+            return new check(propriedade, mensagem);
+        }
+
+        this.isEmail = function(valor) {
+            valor = valor !== null && valor !== undefined ? valor : elemento;
+            /*if(!validator.isEmail(valor)) {
+                erros.push({prop : mensagem});
+            }*/
+            return this;
+        }
     }
 
-    this.isEmail = function(valor) {
-        valor = valor !== null && valor !== undefined ? valor : elemento;
-        /*if(!validator.isEmail(valor)) {
-            erros.push({prop : elemento});
-        }*/
-        return this;
+    function retornaErros() {
+        if(erros.length > 0) {
+            return this.erros;
+        }
+        
     }
+
+    return {
+        check : check
+        //erros : erros
+    }
+
+       
 }
