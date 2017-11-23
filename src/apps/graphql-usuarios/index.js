@@ -46,9 +46,8 @@ module.exports = (db) => {
 
     /**
      * Atualizar usuario
-     * @param {string} _id 
-     * @param {object} input usuario que será cadastrado.
-     * @return {object} usuario criado 
+     * @param {string} usuario Dados do usuario.
+     * @return {string} status da atualização. 
      */
     async function atualizarUsuario(usuario) {
 
@@ -71,11 +70,24 @@ module.exports = (db) => {
 
     }
 
+    /**
+     * Pesquisar usuarios
+     * @param {object} pesquisa 
+     * @return {array} usuario criado 
+     */
+    async function pesquisarUsuarios(pesquisa) {
+
+        const ret = (await modelUsuario.pesquisarUsuarios(pesquisa));
+        return ret;
+
+    }
+
     return {
         obterUsuario,
         criarUsuario,
         listarUsuarios,
         atualizarUsuario,
-        removerUsuario
+        removerUsuario,
+        pesquisarUsuarios
     }
 }

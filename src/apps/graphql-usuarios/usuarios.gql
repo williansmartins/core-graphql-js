@@ -20,6 +20,7 @@ type Usuario {
 type Query {
     obterUsuario(_id: ID!): Usuario
     listarUsuarios: [Usuario]
+    pesquisarUsuarios(nome: String, sobrenome: String, idade: Int, cidade: String, estado: String, cep: String, telefone: String): [Usuario]
 }
 type Mutation {
     criarUsuario(input: incluirUsuario): Usuario
