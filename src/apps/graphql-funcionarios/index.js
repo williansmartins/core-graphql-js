@@ -38,6 +38,8 @@ module.exports = ({ getModule }) => {
      */
     async function criarFuncionario({ input }) {
 
+        getModule('modules/form', true)(input);
+
         const ret = (await modelFuncionario.incluirFuncionario(input));
         return ret;
 
