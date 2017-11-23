@@ -4,7 +4,17 @@
  * @since 2017-11-22
  */
 'use strict';
-
+/**
+ * Construtor da função.
+ * @param {object} db Conexão com o MongoDB
+ * @return {object.<function>} 
+ * - obterUsuario : Obter usuario através do ID
+ * - criarUsuario: Criar o usuario
+ * - listarUsuarios: Listar usuarios
+ * - atualizarUsuario: Atualizar usuario
+ * - removerUsuario: Remover usuarios
+ * - pesquisarUsuarios: Pesquisar usuario atraves de qualquer parametro do recurso 
+ */
 module.exports = (db) => {
 
     const modelUsuario = require('./models/usuario')(db);
