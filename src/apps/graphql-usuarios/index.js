@@ -6,7 +6,7 @@
 'use strict';
 /**
  * Construtor da função.
- * @param {object} db Conexão com o MongoDB
+ * @param {object} context Objeto de contexto da API
  * @return {object.<function>} 
  * - obterUsuario : Obter usuario através do ID
  * - criarUsuario: Criar o usuario
@@ -15,9 +15,9 @@
  * - removerUsuario: Remover usuarios
  * - pesquisarUsuarios: Pesquisar usuario atraves de qualquer parametro do recurso 
  */
-module.exports = (db) => {
+module.exports = ({ getModule }) => {
 
-    const modelUsuario = require('./models/usuario')(db);
+    const modelUsuario = getModule('models/usuario', true);
 
     /**
      * Obter usuario atraves do id

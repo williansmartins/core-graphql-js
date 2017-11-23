@@ -36,7 +36,7 @@ async.auto({
   },
   graphql: ['mongodb', (_, callback) => {
     // Obtem todas as APIs GraphQL
-    const { schema, root } = require('./lib/scan-apps-graphql')(app.get('mongodb'));
+    const { schema, root } = require('./lib/scan-apps-graphql')(app);
     app.use('/graphql', graphqlHTTP({
       schema: schema,
       rootValue: root,

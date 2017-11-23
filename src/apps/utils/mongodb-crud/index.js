@@ -7,8 +7,8 @@
 
 const { ObjectID } = require('mongodb');
 
-module.exports = (db) => {
-
+module.exports = ({ db }) => {
+    
     /**
      * Vaidar ID.
      * @param {string} id

@@ -5,9 +5,10 @@
  */
 'use strict';
 
-module.exports = (db) => {
+module.exports = ({ getModule }) => {
 
-    const utils = require('../../utils/mongodb-crud')(db);
+    // const utils = require('../../utils/mongodb-crud')(context);
+    const crud = getModule('utils/mongodb-crud', true);
 
     /**
      * Obter usuario pelo ID.
@@ -17,7 +18,7 @@ module.exports = (db) => {
     async function obterUsuario(id) {
 
         try {
-            let ret = (await utils.find('usuarios', id));
+            let ret = (await crud.find('usuarios', id));
             return ret;
         } catch (error) {
             return error;
@@ -33,7 +34,7 @@ module.exports = (db) => {
     async function pesquisarUsuarios(query) {
 
         try {
-            let ret = (await utils.scan('usuarios', query));
+            let ret = (await crud.scan('usuarios', query));
             return ret;
         } catch (error) {
             return error;
@@ -49,7 +50,7 @@ module.exports = (db) => {
     async function incluirUsuario(usuario) {
 
         try {
-            let ret = (await utils.insert('usuarios', usuario));
+            let ret = (await crud.insert('usuarios', usuario));
             return ret.ops[0];
         } catch (error) {
             return error;
@@ -66,7 +67,7 @@ module.exports = (db) => {
     async function atualizarUsuario(id, usuario) {
 
         try {
-            let ret = (await utils.update('usuarios', id, usuario));
+            let ret = (await crud.update('usuarios', id, usuario));
             return ret;
         } catch (error) {
             return error;
@@ -82,7 +83,7 @@ module.exports = (db) => {
     async function removerUsuario(id) {
 
         try {
-            const ret = (await utils.remove('usuarios', id));
+            const ret = (await crud.remove('usuarios', id));
             return ret;
         } catch (error) {
             return error;

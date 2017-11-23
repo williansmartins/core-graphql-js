@@ -10,6 +10,8 @@ const { mergeTypes } = require('merge-graphql-schemas');
 const fs = require('fs');
 const path = require('path');
 const { graphqlSchemaIsValid } = require('./utils');
+const Context = require('../context-app');
+
 
 // Diretorio das APIs em GraphQL
 const folderApp = 'apps';
@@ -20,10 +22,10 @@ const prefix = 'graphql';
 
 /**
  * Mapear script GraphQL
- * @param {object} db Conexão do MongoDB
+ * @param {object} server Modulo do Express
  * @return {void} 
  */
-module.exports = (db) => {
+module.exports = server => {
 
     const root = {};
     const schemas = [];
@@ -49,14 +51,14 @@ module.exports = (db) => {
 
             if (findIndex && findGraphQL) {
                 try {
-                    const resolverFunction = require(findIndex)(db);
+                    const resolverFunction = require(findIndex)(new Context(dirAPI, server));
                     const stringSchema = fs.readFileSync(findGraphQL, 'utf8');
                     if (graphqlSchemaIsValid(stringSchema)) {
                         schemas.push(stringSchema);
                         Object.assign(root, resolverFunction);
                     }
                 } catch (error) {
-                    const regex = new RegExp('(.+)(?=/' + folderApp + ')', 'g');
+                    const regex = new RegExp('(.+)(?=([/\\\\]' + folderApp + '))', 'g');
                     errors.push({
                         functionResolved: findIndex.replace(regex, '.'),
                         graphqlSchema: findGraphQL.replace(regex, '.')
