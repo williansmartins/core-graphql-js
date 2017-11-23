@@ -22,19 +22,22 @@ function Verify(objeto) {
             }*/
             return this;
         }
-    }
 
-    function retornaErros() {
-        if(erros.length > 0) {
-            return this.erros;
-        }
-        
     }
 
     return {
-        check : check
-        //erros : erros
+        check : check,
+        erros : erros
     }
 
        
 }
+
+/*var v = new Verify("A");
+var {check, erros} = v.check("A", "A").isEmail();
+
+if(erros.length === 0) {
+    // sobe graphql
+} else {
+    new GraphQLError(`Error: ${erros}`);
+}*/
