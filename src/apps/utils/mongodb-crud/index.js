@@ -1,5 +1,5 @@
 /**
- * @file Crud simples no MongoDB
+ * @file CRUD padrão no MongoDB.
  * @author @douglaspands
  * @since 2017-11-21
  */
@@ -9,17 +9,19 @@ const { ObjectID } = require('mongodb');
 
 module.exports = (db) => {
 
+    const idRegex = new RegExp('^[0-9a-f]{24}$', 'g');
+
     /**
      * Consultar no MongoDB
-     * @param {string} collection 
-     * @param {string} _id
-     * @return {Promise.<array>} Lista de usuarios
+     * @param {string} collection tabela
+     * @param {string} _id id
+     * @return {Promise.<array>} retorna lista de recursos pesquisado
      */
-    const find = async (collection, _id) => {
+    async function find(collection, _id) {
 
         const query = {};
 
-        if (_id && /^[0-9A-F]{12}$/g.test(_id)) {
+        if (_id && idRegex.test(_id)) {
             query['_id'] = ObjectID(_id);
         }
 
@@ -33,7 +35,7 @@ module.exports = (db) => {
                 })
                 .catch(err => {
                     reject(err);
-                })
+                });
 
         });
 
@@ -41,17 +43,17 @@ module.exports = (db) => {
 
     /**
      * Remover no MongoDB
-     * @param {string} collection 
-     * @param {string} _id
-     * @return {Promise.<object>} Retorno status
+     * @param {string} collection tabela
+     * @param {string} _id id
+     * @return {Promise.<string>} retorno o status
      */
-    const remove = async (collection, _id) => {
+    async function remove(collection, _id) {
 
         const query = {};
 
         return new Promise((resolve, reject) => {
 
-            if (_id && (/^[0-9A-F]{12}$/g).test(_id)) {
+            if (_id && idRegex.test(_id)) {
                 query['_id'] = ObjectID(_id);
             } else {
                 reject('ID invalido!');
@@ -59,8 +61,12 @@ module.exports = (db) => {
 
             db.collection(collection)
                 .deleteOne(query)
-                .then(data => resolve(data))
-                .catch(err => reject(err))
+                .then(data => {
+                    resolve(data);
+                })
+                .catch(err => {
+                    reject(err);
+                });
 
         });
 
@@ -68,11 +74,11 @@ module.exports = (db) => {
 
     /**
      * Insert no MongoDB
-     * @param {string} collection 
-     * @param {object} body
-     * @return {Promise.<object>} usuario
+     * @param {string} collection tabela
+     * @param {object} body documento/objeto que sera persistido.
+     * @return {Promise.<object>} retorno o proprio documento/objeto com o ID.
      */
-    const insert = async (collection, body) => {
+    async function insert(collection, body) {
 
         return new Promise((resolve, reject) => {
 
@@ -83,7 +89,7 @@ module.exports = (db) => {
                 })
                 .catch(err => {
                     reject(err);
-                })
+                });
 
         });
 
@@ -91,12 +97,12 @@ module.exports = (db) => {
 
     /**
      * Atualizar no MongoDB
-     * @param {string} collection 
-     * @param {string} _id
-     * @param {object} set
-     * @return {Promise.<object>} Usuario atualizado.
+     * @param {string} collection tabela
+     * @param {string} _id id
+     * @param {object} set objeto com os campo que serão atualizados
+     * @return {Promise.<object>} retorna o documento/objeto atualizado
      */
-    const update = async (collection, _id, set) => {
+    async function update(collection, _id, set) {
 
         const query = {};
 
@@ -106,7 +112,7 @@ module.exports = (db) => {
 
         return new Promise((resolve, reject) => {
 
-            if (_id && (/^[0-9A-F]{12}$/g).test(_id)) {
+            if (_id && idRegex.test(_id)) {
                 query['_id'] = ObjectID(id);
             } else {
                 reject('ID invalido!');
@@ -114,8 +120,12 @@ module.exports = (db) => {
 
             db.collection(collection)
                 .updateOne(query, update)
-                .then(data => resolve(data))
-                .catch(err => reject(err))
+                .then(data => {
+                    resolve(data);
+                })
+                .catch(err => {
+                    reject(err);
+                });
 
         });
 

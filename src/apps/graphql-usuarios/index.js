@@ -11,12 +11,13 @@ module.exports = (db) => {
 
     /**
      * Obter usuario atraves do id
-     * @param {string} _id 
+     * @param {string} id 
      * @return {object} usuario
      */
-    function obterUsuario(_id) {
+    async function obterUsuario({ _id }) {
 
-        return (modelUsuario.obterUsuario(_id))[0];
+        const ret = (await modelUsuario.obterUsuario(_id));
+        return ret[0];
 
     }
 
@@ -25,9 +26,10 @@ module.exports = (db) => {
      * @param {object} input usuario que será cadastrado.
      * @return {object} usuario criado 
      */
-    function criarUsuario({ input }) {
+    async function criarUsuario({ input }) {
 
-        return modelUsuario.incluirUsuario(input);
+        const ret = (await modelUsuario.incluirUsuario(input));
+        return ret;
 
     }
 
@@ -35,9 +37,10 @@ module.exports = (db) => {
      * Obter lista de usuarios
      * @return {array} lista de usuarios
      */
-    function listarUsuarios() {
+    async function listarUsuarios() {
 
-        return modelUsuario.obterUsuario();
+        const ret = (await modelUsuario.obterUsuario());
+        return ret;
 
     }
 
@@ -47,9 +50,10 @@ module.exports = (db) => {
      * @param {object} input usuario que será cadastrado.
      * @return {object} usuario criado 
      */
-    function atualizarUsuario(_id, { input }) {
+    async function atualizarUsuario({ _id }, { input }) {
 
-        return modelUsuario.atualizarUsuario(_id, input);
+        const ret = (await modelUsuario.atualizarUsuario(_id, input));
+        return ret;
 
     }
 
@@ -58,9 +62,10 @@ module.exports = (db) => {
      * @param {string} _id 
      * @return {object} status 
      */
-    function removerUsuario(_id) {
+    async function removerUsuario({ _id }) {
 
-        return modelUsuario.removerUsuario(_id);
+        const ret = (await modelUsuario.removerUsuario(_id));
+        return ret;
 
     }
 

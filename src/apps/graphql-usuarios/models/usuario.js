@@ -17,7 +17,8 @@ module.exports = (db) => {
     async function obterUsuario(id) {
 
         try {
-            return (await utils.find('usuarios', id));
+            let ret = (await utils.find('usuarios', id));
+            return ret;
         } catch (error) {
             return error;
         }
