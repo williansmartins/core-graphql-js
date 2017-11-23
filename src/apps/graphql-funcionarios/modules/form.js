@@ -10,13 +10,42 @@ module.exports = ({ getModule }) => {
 
     const validator = getModule('utils/validator');
 
-    function validar (funcionario) {
+    /**
+     * Função para validar objeto de entrada.
+     * @param {object} funcionario Objeto que será inspecionado
+     * @return {void} 
+     */
+    function validar(funcionario) {
 
-        const { check, verifyGraphQL } = validator(funcionario);
+        const { checkField, verifyGraphQL } = validator(funcionario);
 
-        check('_id', 'ID invalido').isOptional().isMongoId();
-        check('nome', 'Nome invalido').isOptional().isEmpty();
-        check('sobrenome', 'Sobrenome invalido').isOptional().isEmpty();
+        checkField('_id', 'ID invalido')
+            .isOptional()
+            .isMongoId();
+
+        checkField('nome', 'Nome invalido')
+            .isOptional()
+            .notEmpty();
+
+        checkField('sobrenome', 'Sobrenome invalido')
+            .isOptional()
+            .notEmpty();
+
+        checkField('cidade', 'Cidade invalida')
+            .isOptional()
+            .notEmpty();
+
+        checkField('estado', 'Estado invalido')
+            .isOptional()
+            .notEmpty();
+
+        checkField('telefone', 'Telefone invalido')
+            .isOptional()
+            .custom(telefone => (/^([\s-\(])?([0-9]{2,3})?([\s-\)])?([0-9]{5})-?([0-9]{4})$/g).test(telefone));
+
+        checkField('empresa', 'Empresa invalida')
+            .isOptional()
+            .notEmpty();
 
         verifyGraphQL();
     }
