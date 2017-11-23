@@ -1,5 +1,6 @@
 /**
  * @file Modulo para validar os parametros de entrada.
+ * @author @douglaspands
  * @author Victor Tripeno
  * @since 2017-11-23
  */
@@ -13,8 +14,9 @@ module.exports = ({ getModule }) => {
 
         const { check, verifyGraphQL } = validator(funcionario);
 
-        check('nome', 'Nome invalido').isEmail();
-        check('sobrenome', 'Sobrenome invalido').isEmail();
+        check('_id', 'ID invalido').isOptional().isMongoId();
+        check('nome', 'Nome invalido').isOptional().isEmpty();
+        check('sobrenome', 'Sobrenome invalido').isOptional().isEmpty();
 
         verifyGraphQL();
     }
