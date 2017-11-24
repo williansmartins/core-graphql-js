@@ -8,7 +8,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 const { GraphQLError } = require('graphql');
-const c = require('./constants');
+const cons = require('./constants');
 const ext = require('./extends');
 
 /**
@@ -82,7 +82,8 @@ function inspection(objeto) {
 
             if (!flgValidation) return this;
 
-            let ret = c.REGEX.MONGOID.test(elemento);
+            const regex = new RegExp(cons.REGEX.MONGOID, 'g');
+            const ret = regex.test(elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
                 flgErro = true;
@@ -99,7 +100,8 @@ function inspection(objeto) {
 
             if (!flgValidation) return this;
 
-            let ret = c.REGEX.EMAIL.test(elemento);
+            const regex = new RegExp(cons.REGEX.EMAIL, 'g');
+            const ret = regex.test(elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
                 flgErro = true;
@@ -116,7 +118,8 @@ function inspection(objeto) {
 
             if (!flgValidation) return this;
 
-            let ret = c.REGEX.PHONE.test(elemento);
+            const regex = new RegExp(cons.REGEX.PHONE, 'g');
+            const ret = regex.test(elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
                 flgErro = true;
@@ -133,7 +136,8 @@ function inspection(objeto) {
 
             if (!flgValidation) return this;
 
-            let ret = c.REGEX.CEP.test(elemento);
+            const regex = new RegExp(cons.REGEX.CEP, 'g');
+            const ret = regex.test(elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
                 flgErro = true;
@@ -292,7 +296,7 @@ function inspection(objeto) {
             if (!flgValidation) return this;
 
             let _elemento = _.isString(elemento) ? elemento.toUpperCase() : '';
-            let ret = _.includes(c.UF_LIST, _elemento);
+            let ret = _.includes(cons.UF_LIST, _elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
                 flgErro = true;
