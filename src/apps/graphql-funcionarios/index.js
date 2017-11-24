@@ -18,6 +18,7 @@
 module.exports = ({ getModule }) => {
 
     const modelFuncionario = getModule('models/funcionario', true);
+    const validarEntrada = getModule('modules/form', true);
 
     /**
      * Obter funcionario atraves do id
@@ -25,6 +26,8 @@ module.exports = ({ getModule }) => {
      * @return {object} funcionario
      */
     async function obterFuncionario({ _id }) {
+
+        validarEntrada({ _id });
 
         const ret = (await modelFuncionario.obterFuncionario(_id));
         return ret;
@@ -38,7 +41,7 @@ module.exports = ({ getModule }) => {
      */
     async function criarFuncionario({ input }) {
 
-        getModule('modules/form', true)(input);
+        validarEntrada(input);
 
         const ret = (await modelFuncionario.incluirFuncionario(input));
         return ret;
@@ -59,9 +62,11 @@ module.exports = ({ getModule }) => {
     /**
      * Atualizar funcionario
      * @param {string} funcionario Dados do funcionario.
-     * @return {string} status da atualização. 
+     * @return {string} status 
      */
     async function atualizarFuncionario(funcionario) {
+
+        validarEntrada(funcionario);
 
         const _id = funcionario._id, body = funcionario;
         delete body._id;
@@ -77,6 +82,8 @@ module.exports = ({ getModule }) => {
      */
     async function removerFuncionario({ _id }) {
 
+        validarEntrada({ _id });
+
         const ret = (await modelFuncionario.removerFuncionario(_id));
         return ret;
 
@@ -85,9 +92,11 @@ module.exports = ({ getModule }) => {
     /**
      * Pesquisar funcionarios
      * @param {object} pesquisa 
-     * @return {array} funcionario criado 
+     * @return {array} lista de funcionarios
      */
     async function pesquisarFuncionarios(pesquisa) {
+
+        validarEntrada(pesquisa);
 
         const ret = (await modelFuncionario.pesquisarFuncionarios(pesquisa));
         return ret;

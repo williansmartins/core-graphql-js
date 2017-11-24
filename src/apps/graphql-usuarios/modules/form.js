@@ -15,9 +15,9 @@ module.exports = ({ getModule }) => {
      * @param {object} funcionario Objeto que será inspecionado
      * @return {void} 
      */
-    function validar(funcionario) {
+    function validar(usuario) {
 
-        const { checkField, checkReportForGraphQL } = validator(funcionario);        
+        const { checkField, checkReportForGraphQL } = validator(usuario);        
 
         checkField('_id', 'ID invalido')
             .isOptional()
@@ -31,6 +31,10 @@ module.exports = ({ getModule }) => {
             .isOptional()
             .notEmpty();
 
+        checkField('idade', 'Idade invalida')
+            .isOptional()
+            .isNumber();
+
         checkField('cidade', 'Cidade invalida')
             .isOptional()
             .notEmpty();
@@ -43,9 +47,9 @@ module.exports = ({ getModule }) => {
             .isOptional()
             .isPhoneNumber();
 
-        checkField('empresa', 'Empresa invalida')
+        checkField('cep', 'CEP invalido')
             .isOptional()
-            .notEmpty();
+            .isCEP();
 
         checkReportForGraphQL();
 

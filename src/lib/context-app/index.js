@@ -4,6 +4,7 @@
  * @since 2017-11-23
  */
 'use strict';
+const fs = require('fs');
 const path = require('path');
 
 function Context(pathApp, server) {
@@ -23,28 +24,29 @@ function Context(pathApp, server) {
      * @return {object} Conexão com o MongoDB
      */
     this.getModule = (name, self) => {
+
         if (typeof name !== 'string') {
             return undefined;
         }
+
         const _self = (typeof self === 'boolean') ? self : false;
         const _name = name;
-        let _mod;
+
         try {
-            let _dir = path.join(_pathApp, _name);
-            _mod = require(_dir);
-            if (_self) _mod = _mod(this);
-        } catch (err1) {
+            const _mod = require(path.join(_pathApp, _name));
+            return (_self && _mod) ? _mod(this) : _mod;
+        } catch (errA) {
             try {
-                let _dir = path.join(_pathApp, '..', _name);
-                _mod = require(_dir);
-                if (_self) _mod = _mod(this);
-            } catch (err2) {
-                console.log(`${err1}\n${err2}`);
-                _mod = undefined;
+                const _mod = require(path.join(_pathApp, '..', _name));
+                return (_self && _mod) ? _mod(this) : _mod;
+            } catch (errB) {
+                console.log(errA, '\n', errB);
+                return undefined;
             }
-        } finally {
-            return _mod;
         }
+
+        return _mod;
+
     }
 
 }

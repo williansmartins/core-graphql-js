@@ -18,6 +18,7 @@
 module.exports = ({ getModule }) => {
 
     const modelUsuario = getModule('models/usuario', true);
+    const validarEntrada = getModule('modules/form', true);
 
     /**
      * Obter usuario atraves do id
@@ -25,6 +26,8 @@ module.exports = ({ getModule }) => {
      * @return {object} usuario
      */
     async function obterUsuario({ _id }) {
+
+        validarEntrada({ _id });
 
         const ret = (await modelUsuario.obterUsuario(_id));
         return ret;
@@ -37,6 +40,8 @@ module.exports = ({ getModule }) => {
      * @return {object} usuario criado 
      */
     async function criarUsuario({ input }) {
+
+        validarEntrada(input);
 
         const ret = (await modelUsuario.incluirUsuario(input));
         return ret;
@@ -61,6 +66,8 @@ module.exports = ({ getModule }) => {
      */
     async function atualizarUsuario(usuario) {
 
+        validarEntrada(usuario);
+
         const _id = usuario._id, body = usuario;
         delete body._id;
         const ret = (await modelUsuario.atualizarUsuario(_id, body));
@@ -75,6 +82,8 @@ module.exports = ({ getModule }) => {
      */
     async function removerUsuario({ _id }) {
 
+        validarEntrada({ _id });
+
         const ret = (await modelUsuario.removerUsuario(_id));
         return ret;
 
@@ -86,6 +95,8 @@ module.exports = ({ getModule }) => {
      * @return {array} usuario criado 
      */
     async function pesquisarUsuarios(pesquisa) {
+
+        validarEntrada(pesquisa);
 
         const ret = (await modelUsuario.pesquisarUsuarios(pesquisa));
         return ret;

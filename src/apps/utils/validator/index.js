@@ -7,8 +7,10 @@
 'use strict';
 const _ = require('lodash');
 const moment = require('moment');
-const validator = require('validator');
 const { GraphQLError } = require('graphql');
+const c = require('./constants');
+const ext = require('./extends');
+
 /**
  * Modulo de verificação do objeto.
  * @param {object} objeto Objeto que será inspecionado.
@@ -16,7 +18,19 @@ const { GraphQLError } = require('graphql');
  */
 function inspection(objeto) {
 
-    let listaErros = [];
+    const listaErros = [];
+
+    /**
+     * @typedef {object} InspectFail
+     * @property {string} campo 
+     * @property {any} valor 
+     * @property {string} mensagem 
+     */
+    function InspectFail(campo, valor, mensagemErro) {
+        this.campo = campo;
+        this.valor = valor;
+        this.mensagem = mensagemErro;
+    }
 
     /**
      * Função que recebe o campo e a mensagem de erro.
@@ -32,136 +46,287 @@ function inspection(objeto) {
         let flgErro = false, flgValidation = true;
         let elemento = _.get(objeto, propriedade);
 
-        (Object.keys(validator)).forEach((m) => {
+        /**
+         * Função para tornar a validação opcional caso o campo esteja vazio.
+         * @return {void}
+         */
+        this.isOptional = () => {
 
-            this[m] = (arg1) => {
+            if (!elemento) flgValidation = false;
+            return this;
 
-                if (!flgValidation) return this;
+        }
 
-                let args = [];
-                args.push(elemento);
-                if (arg1) args.push(arg1);
+        /**
+         * Função para verificar se data é valida. 
+         * @return {void}
+         */
+        this.isDateValid = () => {
 
-                let ret = validator[m].apply(this, args);
+            if (!flgValidation) return this;
+
+            let ret = moment(elemento).isValid();
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar o ID do MongoDB
+         * @return {void}
+         */
+        this.isMongoId = () => {
+
+            if (!flgValidation) return this;
+
+            let ret = c.REGEX.MONGOID.test(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar Email
+         * @return {void}
+         */
+        this.isEmail = () => {
+
+            if (!flgValidation) return this;
+
+            let ret = c.REGEX.EMAIL.test(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar o telefone
+         * @return {void}
+         */
+        this.isPhoneNumber = () => {
+
+            if (!flgValidation) return this;
+
+            let ret = c.REGEX.PHONE.test(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar o CEP
+         * @return {void}
+         */
+        this.isCEP = () => {
+
+            if (!flgValidation) return this;
+
+            let ret = c.REGEX.CEP.test(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar se é booleano.
+         * @return {void}
+         */
+        this.isBoolean = () => {
+
+            if (!flgValidation) return this;
+
+            let ret = _.isBoolean(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar é numero.
+         * @return {void}
+         */
+        this.isNumber = () => {
+
+            if (!flgValidation) return this;
+
+            let ret = _.isNumber(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar se é texto.
+         * @return {void}
+         */
+        this.isString = () => {
+
+            if (!flgValidation) return this;
+
+            let ret = _.isString(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar o tamanho.
+         * @return {void}
+         */
+        this.isLength = (min, max) => {
+
+            if (!flgValidation) return this;
+
+            let _min = (_.isNumber(min)) ? min : 0;
+            let _max = (_.isNumber(max)) ? max : Number.MAX_SAFE_INTEGER;
+
+            let ret = (_.size(elemento) >= _min && _.size(elemento) <= _max);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar o texto faz parte de uma lista.
+         * @param {array} lista 
+         * @return {void}
+         */
+        this.isIn = (lista) => {
+
+            if (!flgValidation) return this;
+
+            let _lista = _.isArray(lista) ? lista : [];
+            let ret = _.includes(_lista, elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar o texto não esta vazio.
+         * @return {void}
+         */
+        this.notEmpty = (lista) => {
+
+            if (!flgValidation) return this;
+
+            let ret = !_.isEmpty(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar se o CPF é valido.
+         * @return {void}
+         */
+        this.isCPF = () => {
+
+            if (!flgValidation) return this;
+
+            let ret = ext.validarCPF(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar se o CNPJ é valido.
+         * @return {void}
+         */
+        this.isCNPJ = () => {
+
+            if (!flgValidation) return this;
+
+            let ret = ext.validarCNPJ(elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função para verificar a sigla do estado.
+         * @return {void}
+         */
+        this.isUF = () => {
+
+            if (!flgValidation) return this;
+
+            let _elemento = _.isString(elemento) ? elemento.toUpperCase() : '';
+            let ret = _.includes(c.UF_LIST, _elemento);
+            if (!ret && !flgErro) {
+                listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
+                flgErro = true;
+            }
+            return this;
+
+        }
+
+        /**
+         * Função de validação customizada.
+         * @param {function} callback Função que retornara true ou false
+         * @return {void} 
+         */
+        this.custom = (callback) => {
+
+            if (!flgValidation) return this;
+
+            if (typeof callback === 'function') {
+                let ret = callback(elemento);
                 if (!ret && !flgErro) {
-                    listaErros.push({
-                        campo: propriedade,
-                        valor: elemento,
-                        mensagem: mensagemErro
-                    })
+                    listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
                     flgErro = true;
                 }
-                return this;
             }
+            return this;
+        }
 
-            /**
-             * Função para tornar a validação opcional caso o campo esteja vazio.
-             * @return {void}
-             */
-            this.isOptional = () => {
-
-                if (!elemento) flgValidation = false;
-                return this;
-
-            }
-
-            /**
-             * Função para verificar se data é valida. 
-             * @return {void}
-             */
-            this.isDateValid = () => {
-
-                if (!flgValidation) return this;
-
-                let ret = moment(elemento).isValid();
-                if (!ret && !flgErro) {
-                    listaErros.push({
-                        campo: propriedade,
-                        valor: elemento,
-                        mensagem: mensagemErro
-                    })
-                    flgErro = true;
-                }
-                return this;
-
-            }
-
-            /**
-             * Função para verificar o texto faz parte de uma lista.
-             * @param {array} lista 
-             * @return {void}
-             */
-            this.isIn = (lista) => {
-
-                if (!flgValidation) return this;
-
-                let _lista = Array.isArray(lista) ? lista : [];
-                let ret = _.includes(_lista, elemento);
-                if (!ret && !flgErro) {
-                    listaErros.push({
-                        campo: propriedade,
-                        valor: elemento,
-                        mensagem: mensagemErro
-                    })
-                    flgErro = true;
-                }
-                return this;
-
-            }
-
-            /**
-             * Função para verificar o texto não esta vazio.
-             * @return {void}
-             */
-            this.notEmpty = (lista) => {
-
-                if (!flgValidation) return this;
-
-                let ret = !_.isEmpty(elemento);
-                if (!ret && !flgErro) {
-                    listaErros.push({
-                        campo: propriedade,
-                        valor: elemento,
-                        mensagem: mensagemErro
-                    })
-                    flgErro = true;
-                }
-                return this;
-
-            }
-
-            /**
-             * Função de validação customizada.
-             * @param {function} callback Função que retornara true ou false
-             * @return {void} 
-             */
-            this.custom = (callback) => {
-
-                if (!flgValidation) return this;
-
-                if (typeof callback === 'function') {
-                    let ret = callback(elemento);
-                    if (!ret && !flgErro) {
-                        listaErros.push({
-                            campo: propriedade,
-                            valor: elemento,
-                            mensagem: mensagemErro
-                        })
-                        flgErro = true;
-                    }
-                }
-                return this;
-            }
-
-        });
-
-    }
+    };
 
     /**
      * Função para emitir evento de erro para o GraphQL.
      * @return {void}
      */
-    function verifyGraphQL() {
+    function checkReportForGraphQL() {
         if (listaErros.length > 0) {
             throw new GraphQLError(listaErros);
         }
@@ -181,7 +346,7 @@ function inspection(objeto) {
     return {
         checkField,
         getListErrors,
-        verifyGraphQL
+        checkReportForGraphQL
     }
 }
 
