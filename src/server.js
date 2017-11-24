@@ -6,24 +6,19 @@
 'use strict';
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
-const winston = require('winston');
-const expressWinston = require('express-winston');
 const async = require('async');
 
 const app = express();
 
-expressWinston.requestWhitelist.push('body');
-expressWinston.responseWhitelist.push('body');
-app.use(expressWinston.logger({
-  transports: [
-    new winston.transports.Console({
-      json: true,
-      colorize: true
-    })
-  ]
-}));
-
 async.auto({
+  logger: (callback) => {
+    // Configurando de log no Express
+    const expressLog = require('./lib/express-log');
+    expressLog((log) => {
+      app.use(log);
+      callback();
+    });
+  },
   mongodb: (callback) => {
     // Monta conexão do MongoDB
     const mongoConnect = require('./lib/mongodb-connect');

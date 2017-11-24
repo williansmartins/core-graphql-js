@@ -15,12 +15,16 @@ const URI = 'mongodb://localhost:27017/core-graphql';
  * @return {void} 
  */
 module.exports = (callback) => {
+
     MongoClient.connect(URI, (err, db) => {
+
         if (err) {
             console.log(`${err}`);
             callback(err);
         } else {
             callback(null, db);
         }
+
     });
+
 }
