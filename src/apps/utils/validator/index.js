@@ -8,7 +8,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 const { GraphQLError } = require('graphql');
-const cons = require('./constants');
+const constant = require('./constants');
 const ext = require('./extends');
 
 /**
@@ -82,7 +82,7 @@ function inspection(objeto) {
 
             if (!flgValidation) return this;
 
-            const regex = new RegExp(cons.REGEX.MONGOID, 'g');
+            const regex = new RegExp(constant.REGEX.MONGOID, 'g');
             const ret = regex.test(elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
@@ -100,7 +100,7 @@ function inspection(objeto) {
 
             if (!flgValidation) return this;
 
-            const regex = new RegExp(cons.REGEX.EMAIL, 'g');
+            const regex = new RegExp(constant.REGEX.EMAIL, 'g');
             const ret = regex.test(elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
@@ -118,7 +118,7 @@ function inspection(objeto) {
 
             if (!flgValidation) return this;
 
-            const regex = new RegExp(cons.REGEX.PHONE, 'g');
+            const regex = new RegExp(constant.REGEX.PHONE, 'g');
             const ret = regex.test(elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
@@ -136,7 +136,7 @@ function inspection(objeto) {
 
             if (!flgValidation) return this;
 
-            const regex = new RegExp(cons.REGEX.CEP, 'g');
+            const regex = new RegExp(constant.REGEX.CEP, 'g');
             const ret = regex.test(elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
@@ -296,7 +296,7 @@ function inspection(objeto) {
             if (!flgValidation) return this;
 
             let _elemento = _.isString(elemento) ? elemento.toUpperCase() : '';
-            let ret = _.includes(cons.UF_LIST, _elemento);
+            let ret = _.includes(constant.UF_LIST, _elemento);
             if (!ret && !flgErro) {
                 listaErros.push(new InspectFail(propriedade, elemento, mensagemErro));
                 flgErro = true;
