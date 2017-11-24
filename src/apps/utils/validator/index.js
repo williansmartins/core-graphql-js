@@ -37,10 +37,10 @@ function inspection(objeto) {
      * @param {string} propriedade Nome da propriedade validada. 
      * @param {string} mensagemErro Mensagem que será exibida em caso de erro. 
      */
-    function checkField(propriedade, mensagemErro) {
+    function CheckField(propriedade, mensagemErro) {
 
-        if (!(this instanceof checkField)) {
-            return new checkField(propriedade, mensagemErro);
+        if (!(this instanceof CheckField)) {
+            return new CheckField(propriedade, mensagemErro);
         }
 
         let flgErro = false, flgValidation = true;
@@ -344,7 +344,7 @@ function inspection(objeto) {
      * Funções retornadas.
      */
     return {
-        checkField,
+        checkField: CheckField,
         getListErrors,
         checkReportForGraphQL
     }
