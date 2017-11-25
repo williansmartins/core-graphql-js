@@ -1,24 +1,20 @@
 # Core Node.js API with GraphQL and MongoDB
 
-Motor de APIs Node.js com GraphQL e MongoDB  
-<span style="color:blue">Core Node.js API with GraphQL and MongoDB</span> 
+Motor de APIs Node.js com GraphQL e MongoDB.  
+> Core Node.js API with GraphQL and MongoDB. 
 
-## Descrição <span style="color:blue">Description</span>
+## Descrição / Description
   
 Este projeto foi desenvolvido para estudo de APIs utilizando GraphQL na plataforma Node.js.
 Foram construidas 2 APIs utilizando "schemas" GraphQL executando CRUD no banco de dados NoSQL (MongoDB).
 
-<span style="color:blue">
-This project was developed for studying APIs using GraphQL on the Node.js platform.
-Two APIs were built using GraphQL "schemas" running CRUD in the NoSQL database (MongoDB).
-</span>
+> This project was developed for studying APIs using GraphQL on the Node.js > platform.
+> Two APIs were built using GraphQL "schemas" running CRUD in the NoSQL database (MongoDB).
 
-## Instruções de instalação <span style="color:blue">Installation</span>
+## Instruções de instalação / Installation
 
 Usando o NPM:  
-<span style="color:blue">
-Using npm:
-</span>  
+> Using npm:
 
 ```shell
 $ cd ./core-graphql-js/src
