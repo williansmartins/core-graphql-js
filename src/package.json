@@ -1,7 +1,7 @@
 {
-  "name": "core-graphql",
+  "name": "core-graphql-js",
   "version": "1.0.0",
-  "description": "Motor de APIs GraphQL",
+  "description": "Motor de APIs GraphQL em Node.js",
   "main": "server.js",
   "scripts": {
     "start": "node ./server.js",

@@ -28,5 +28,6 @@ module.exports = (callback) => {
     });
 
     if (typeof callback === 'function') callback(logger);
+    else return logger; 
 
 }
