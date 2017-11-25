@@ -1,5 +1,5 @@
 /**
- * @file Servidor de GraphQL
+ * @file Motor de APIs em Node.js com GraphQL e MongoDB.
  * @author @douglaspands
  * @since 2017-11-22
  */
