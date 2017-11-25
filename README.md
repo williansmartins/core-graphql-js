@@ -11,15 +11,25 @@ Foram construidas 2 APIs utilizando "schemas" GraphQL executando CRUD no banco d
 > This project was developed for studying APIs using GraphQL on the Node.js  platform.
 > Two APIs were built using GraphQL "schemas" running CRUD in the NoSQL database (MongoDB).
 
-## Tecnologias | *Technologies*
+## Tecnologias | *Technologies* 
 
 As tecnologias utilizadas foram:
 > The technologies used were:
 
-- [Node.js 8.9.1 (LTS)](https://nodejs.org/en/) 
-- [GraphQL](http://graphql.org/)
+- [Node.js 8.9.1 (LTS)](https://nodejs.org/en/)
+- [MongoDB 3.4](https://www.mongodb.com/)
+- [mongodb](https://github.com/mongodb/mongo)
+- [expressjs](https://github.com/expressjs/express) 
+- [graphql](http://graphql.org/)
 - [express-graphql](https://github.com/graphql/express-graphql)
-- [MongoDB](https://www.mongodb.com/)
+- [merge-graphql-schemas](https://github.com/okgrow/merge-graphql-schemas)
+- [async](https://github.com/caolan/async)
+- [winstonjs](https://github.com/caolan/async)
+- [express-winston](https://github.com/bithavoc/express-winston)
+- [lodash](https://github.com/lodash/lodash)
+- [moment](https://github.com/moment/moment)
+- [mocha](https://github.com/mochajs/mocha)
+- [nyc](https://github.com/istanbuljs/nyc)
 
 ## Instruções de instalação | *Installation*
 
