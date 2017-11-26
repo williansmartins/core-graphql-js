@@ -1,6 +1,6 @@
 /**
  * @file Validar codigo do Schema
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-21
  */
 'use strict'

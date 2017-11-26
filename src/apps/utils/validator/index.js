@@ -1,7 +1,7 @@
 /**
  * @file Modulo de validação de campos
  * @author Victor Tripeno
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-23
  */
 'use strict';

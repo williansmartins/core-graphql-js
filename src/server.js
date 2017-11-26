@@ -1,6 +1,6 @@
 /**
  * @file Motor de APIs em Node.js com GraphQL e MongoDB.
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-22
  */
 'use strict';
@@ -11,14 +11,6 @@ const async = require('async');
 const app = express();
 
 async.auto({
-  logger: (callback) => {
-    // Configurando de log no Express
-    const expressLog = require('./lib/express-log');
-    expressLog((log) => {
-      app.use(log);
-      callback();
-    });
-  },
   mongodb: (callback) => {
     // Monta conexão do MongoDB
     const mongoConnect = require('./lib/mongodb-connect');
@@ -29,7 +21,21 @@ async.auto({
       callback();
     });
   },
-  graphql: ['mongodb', (_, callback) => {
+  logger: ['mongodb', (_, callback) => {
+    // Configurando de log no Express
+    const expressLog = require('./lib/express-log');
+    expressLog(app.get('mongodb'), (log) => {
+      app.use(log);
+      callback();
+    });
+  }],
+  modules: ['logger', (_, callback) => {
+    // Incluindo middlewares do express.js
+    const expressModules = require('./lib/express-modules');
+    expressModules(app);
+    callback();
+  }],
+  graphql: ['modules', (_, callback) => {
     // Obtem todas as APIs GraphQL
     const { schema, root } = require('./lib/scan-apps-graphql')(app);
     app.use('/graphql', graphqlHTTP({

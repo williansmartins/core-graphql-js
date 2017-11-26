@@ -1,6 +1,6 @@
 /**
  * @file Modulo para validar os parametros de entrada.
- * @author @douglaspands
+ * @author douglaspands
  * @author Victor Tripeno
  * @since 2017-11-23
  */

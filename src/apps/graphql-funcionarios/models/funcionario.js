@@ -1,6 +1,6 @@
 /**
  * @file Model Funcionarios
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-23
  */
 'use strict';

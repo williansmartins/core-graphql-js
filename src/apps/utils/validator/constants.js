@@ -1,6 +1,6 @@
 /** 
  * @file Arquivo de constantes. 
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-23
  */
 'use strict';

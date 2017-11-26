@@ -1,6 +1,6 @@
 /**
  * @file Modulo de merge do GraphQL.
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-22
  */
 'use strict';

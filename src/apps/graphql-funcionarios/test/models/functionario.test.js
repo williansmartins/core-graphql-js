@@ -1,6 +1,6 @@
 /**
  * @file Cobertura de testes do /models/funcionario.js
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-24
  */
 'use strict';

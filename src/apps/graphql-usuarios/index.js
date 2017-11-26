@@ -1,6 +1,6 @@
 /**
  * @file Controller
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-22
  */
 'use strict';

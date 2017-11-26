@@ -1,6 +1,6 @@
 /**
  * @file Modulo de apoio para testes.
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-24
  */
 'use strict';

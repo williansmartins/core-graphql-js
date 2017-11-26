@@ -1,6 +1,6 @@
 /**
  * @file CRUD padrão no MongoDB.
- * @author @douglaspands
+ * @author douglaspands
  * @since 2017-11-21
  */
 'use strict';
