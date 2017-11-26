@@ -16,6 +16,7 @@
   "dependencies": {
     "async": "^2.6.0",
     "compression": "^1.7.1",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "express-graphql": "^0.6.11",
     "express-winston": "^2.4.0",
