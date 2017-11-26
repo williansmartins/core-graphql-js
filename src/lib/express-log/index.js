@@ -7,28 +7,33 @@
 
 const winston = require('winston');
 const expressWinston = require('express-winston');
-require('winston-mongodb').MongoDB;
 
 /**
  * Função que disponibiliza o modulo de log pra cadastro no express.js
+ * @param {function} db Conexão do MongoDB.
  * @param {function} callback Função para passar o modulo de log.
- * @return {void}
+ * @return {function} Retorna o modulo "logger" do winston.
  */
 module.exports = (db, callback) => {
 
     expressWinston.requestWhitelist.push('body');
     expressWinston.responseWhitelist.push('body');
 
+    let transports = [];
+    transports.push(new winston.transports.Console({
+        json: true,
+        colorize: true
+    }));
+
+    if (db) {
+        require('winston-mongodb').MongoDB;
+        transports.push(new winston.transports.MongoDB({
+            db: db
+        }));
+    }
+
     const logger = expressWinston.logger({
-        transports: [
-            new winston.transports.Console({
-                json: true,
-                colorize: true
-            }),
-            new winston.transports.MongoDB({
-                db: db
-            })
-        ]
+        transports: transports
     });
 
     if (typeof callback === 'function') callback(logger);
