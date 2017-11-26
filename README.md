@@ -18,6 +18,7 @@ As tecnologias utilizadas foram:
 
 - [Node.js 8.9.1 (LTS)](https://nodejs.org/en/)
 - [MongoDB 3.4](https://www.mongodb.com/)
+- [nodemon](https://github.com/remy/nodemon/)
 - [mongodb](https://github.com/mongodb/mongo)
 - [expressjs](https://github.com/expressjs/express)
 - [compression](http://expressjs.com/en/resources/middleware/compression.html)
