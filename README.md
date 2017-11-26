@@ -44,10 +44,23 @@ Usando o NPM:
 $ cd ./core-graphql-js/src
 $ npm install
 ```
-## API Exemplo / *Example API*
+## API Exemplo | *Example API*
 
 No diretorio "./src/apps", contem pastas com o prefixo "graphql-". Nelas estão, os codigos de execução e o "GraphQL Query Language" (*.gql) de exemplo.  
 Para adicionar uma API nova, é só criar uma nova pasta com o prefixo "graphql-" e utilizar o mesmo padrão de desenvolvimento das APIs de exemplo.
 
 > In the "./src/apps" directory, it contains folders with the prefix "graphql-". These are the execution codes and the "GraphQL Query Language" (*.gql) for example.  
 > To add a new API, just create a new folder with the prefix "graphql-" and use the same development pattern as the example APIs.
+
+## Hora da diversão | Fun time
+
+Após iniciar o servidor com o comando (NODE_ENV != 'production'):
+> After starting the server with the command (NODE_ENV != 'production'):
+
+```shell
+$ cd ./core-graphql-js/src
+$ npm run start-dev
+```
+
+Estará disponivel o endpoint ( http://localhost:4000/graphql ) do GraphQL no seu navegador. Onde sera possivel testar suas APIs em desenvolvimento.
+> The GraphQL endpoint ( http://localhost:4000/graphql ) will be available in your browser. It will be possible to test your developing APIs.  
