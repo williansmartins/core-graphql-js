@@ -18,13 +18,13 @@ async.auto({
       if (!err) {
         app.set('mongodb', db);
       }
-      callback();
+      callback(null, db);
     });
   },
-  logger: ['mongodb', (_, callback) => {
+  logger: ['mongodb', (result, callback) => {
     // Configurando de log no Express
     const expressLog = require('./lib/express-log');
-    expressLog(app.get('mongodb'), (log) => {
+    expressLog(result.mongodb, (log) => {
       app.use(log);
       callback();
     });
