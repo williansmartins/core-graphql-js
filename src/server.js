@@ -24,9 +24,10 @@ async.auto({
   logger: ['mongodb', (result, callback) => {
     // Configurando de log no Express
     const expressLog = require('./lib/express-log');
-    expressLog(result.mongodb, (log) => {
-      app.use(log);
-      callback();
+    expressLog(result.mongodb, (expressLogger, winstonLogger) => {
+      app.use(expressLogger);
+      app.set('logger', winstonLogger);
+      callback(null, winstonLogger);
     });
   }],
   modules: ['logger', (_, callback) => {
@@ -46,11 +47,11 @@ async.auto({
     }));
     callback(null, Object.keys(root));
   }]
-}, (_, { graphql }) => {
+}, (_, { logger, graphql }) => {
   // Iniciar servidor
   const port = 4000;
   app.listen(port, () => {
-    console.log(`\nExecutando o GraphQL API Server no localhost:${port}/graphql`);
-    graphql.forEach(service => console.log(`-> GraphQL service "${service}" registrado`));
+    logger.info(`Executando o GraphQL API Server no localhost:${port}/graphql`);
+    graphql.forEach(service => logger.info(`-> GraphQL Service "${service}" registrado`));
   });
 });

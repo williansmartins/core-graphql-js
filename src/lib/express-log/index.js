@@ -21,7 +21,6 @@ module.exports = (db, callback) => {
 
     let transports = [];
     transports.push(new winston.transports.Console({
-        json: true,
         colorize: true
     }));
 
@@ -32,11 +31,15 @@ module.exports = (db, callback) => {
         }));
     }
 
-    const logger = expressWinston.logger({
+    const logger = new (winston.Logger)({
         transports: transports
     });
 
-    if (typeof callback === 'function') callback(logger);
-    else return logger;
+    const expressLogger = expressWinston.logger({
+        transports: transports
+    });
+
+    if (typeof callback === 'function') callback(expressLogger, logger);
+    else return { expressLogger, logger };
 
 }
