@@ -21,15 +21,19 @@ module.exports = (app) => {
     expressWinston.responseWhitelist.push('body');
 
     let transports = [];
-    /*
-    transports.push(new winston.transports.Console({
-        colorize: true
-    }));
-    */
+
     if (_db) {
         require('winston-mongodb').MongoDB;
         transports.push(new winston.transports.MongoDB({
             db: _db
+        }));
+        transports.push(new winston.transports.Console({
+            level: 'error',
+            colorize: true
+        }));
+    } else {
+        transports.push(new winston.transports.Console({
+            colorize: true
         }));
     }
 
