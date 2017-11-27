@@ -1,5 +1,5 @@
 /**
- * @file Modulo de merge do GraphQL.
+ * @file Modulo de pesquisa de GraphQL APIs.
  * @author douglaspands
  * @since 2017-11-22
  */
@@ -23,7 +23,7 @@ const prefix = 'graphql';
 /**
  * Mapear script GraphQL
  * @param {object} server Modulo do Express
- * @return {void} 
+ * @return {object} Retorna funções root e os graphql schemas unificados 
  */
 module.exports = server => {
 
