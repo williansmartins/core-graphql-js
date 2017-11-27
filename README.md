@@ -52,7 +52,7 @@ Para adicionar uma API nova, é só criar uma nova pasta com o prefixo "graphql-
 > In the "./src/apps" directory, it contains folders with the prefix "graphql-". These are the execution codes and the "GraphQL Query Language" (*.gql) for example.  
 > To add a new API, just create a new folder with the prefix "graphql-" and use the same development pattern as the example APIs.
 
-## Hora da diversão | Fun time
+## Hora da diversão | *Fun time*
 
 Após iniciar o servidor com o comando (NODE_ENV != 'production'):
 > After starting the server with the command (NODE_ENV != 'production'):
