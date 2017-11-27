@@ -51,7 +51,9 @@ async.auto({
   // Iniciar servidor
   const port = 4000;
   app.listen(port, () => {
-    logger.info(`Executando o GraphQL API Server no localhost:${port}/graphql`);
-    graphql.forEach(service => logger.info(`-> GraphQL Service "${service}" registrado`));
+    let log = [];
+    log.push(`Executando o GraphQL API Server no localhost:${port}/graphql`);
+    graphql.forEach(service => log.push(`-> GraphQL Service "${service}" registrado`));
+    logger.info(log), console.log(log.join('\n'));
   });
 });

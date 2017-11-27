@@ -20,9 +20,9 @@ module.exports = (db, callback) => {
     expressWinston.responseWhitelist.push('body');
 
     let transports = [];
-    transports.push(new winston.transports.Console({
-        colorize: true
-    }));
+//    transports.push(new winston.transports.Console({
+//        colorize: true
+//    }));
 
     if (db) {
         require('winston-mongodb').MongoDB;
@@ -36,7 +36,7 @@ module.exports = (db, callback) => {
     });
 
     const expressLogger = expressWinston.logger({
-        transports: transports
+        winstonInstance: logger
     });
 
     if (typeof callback === 'function') callback(expressLogger, logger);
