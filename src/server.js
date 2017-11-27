@@ -33,7 +33,7 @@ async.auto({
     const logger = expressLog(app);
     callback(null, logger);
   }],
-  graphql: ['modules', 'mongodb', (_, callback) => {
+  graphql: ['logger', (_, callback) => {
     // Obtem todas as APIs GraphQL
     const { schema, root } = require('./lib/scan-apps-graphql')(app);
     app.use('/graphql', graphqlHTTP({
