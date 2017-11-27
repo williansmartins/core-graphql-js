@@ -1,6 +1,6 @@
 # Core Node.js API with GraphQL and MongoDB
 
-Motor de APIs Node.js com GraphQL e MongoDB.  
+Motor de API Node.js com GraphQL e MongoDB.  
 > Core Node.js API with GraphQL and MongoDB. 
 
 ## Descrição | *Description*
