@@ -21,22 +21,19 @@ async.auto({
       callback(null, db);
     });
   },
-  logger: ['mongodb', (result, callback) => {
-    // Configurando de log no Express
-    const expressLog = require('./lib/express-log');
-    expressLog(result.mongodb, (expressLogger, winstonLogger) => {
-      app.use(expressLogger);
-      app.set('logger', winstonLogger);
-      callback(null, winstonLogger);
-    });
-  }],
-  modules: ['logger', (_, callback) => {
+  modules: (callback) => {
     // Incluindo middlewares do express.js
     const expressModules = require('./lib/express-modules');
     expressModules(app);
     callback();
+  },
+  logger: ['modules', 'mongodb', (_, callback) => {
+    // Configurando de log no Express
+    const expressLog = require('./lib/express-log');
+    const logger = expressLog(app);
+    callback(null, logger);
   }],
-  graphql: ['modules', (_, callback) => {
+  graphql: ['modules', 'mongodb', (_, callback) => {
     // Obtem todas as APIs GraphQL
     const { schema, root } = require('./lib/scan-apps-graphql')(app);
     app.use('/graphql', graphqlHTTP({
